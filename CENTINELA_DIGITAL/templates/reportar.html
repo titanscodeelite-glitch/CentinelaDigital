@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centinela Digital - Reportar Incidente</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-info" href="{{ url_for('index') }}">
+                <i class="fa-solid fa-shield-halved me-2"></i>CENTINELA DIGITAL
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}"><i class="fa-solid fa-house me-1"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('reportar') }}"><i class="fa-solid fa-triangle-exclamation me-1"></i> Reportar Incidente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('educacion') }}"><i class="fa-solid fa-graduation-cap me-1"></i> Guías de Prevención</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="container my-4 flex-grow-1">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+                        <i class="fa-solid fa-circle-check me-2"></i>{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-danger text-white py-3">
+                        <h4 class="mb-0 fw-bold"><i class="fa-solid fa-shield-virus me-2"></i>Reportar Incidente o Fraude</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="{{ url_for('reportar') }}" method="POST">
+                            <div class="mb-3">
+                                <label for="tipo_incidente" class="form-label fw-bold">Tipo de Incidente</label>
+                                <select class="form-select" id="tipo_incidente" name="tipo_incidente" required>
+                                    <option value="" selected disabled>Selecciona una opción...</option>
+                                    <option value="Phishing / SMS Falso">Phishing / SMS Falso (Mensaje engañoso)</option>
+                                    <option value="Suplantación de Identidad">Suplantación de Identidad (WhatsApp / Redes)</option>
+                                    <option value="Fraude Financiero">Fraude en compras / transferencias</option>
+                                    <option value="Malware / Ransomware">Virus o Bloqueo de equipo</option>
+                                    <option value="Otro">Otro tipo de ciberamenaza</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label fw-bold">Descripción detallada</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="4" placeholder="Describe lo sucedido, incluye números telefónicos o enlaces sospechosos..." required></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="contacto" class="form-label fw-bold">Correo o teléfono de contacto (Opcional)</label>
+                                <input type="text" class="form-control" id="contacto" name="contacto" placeholder="Ingresa tu contacto si deseas seguimiento de tu reporte">
+                            </div>
+
+                            <button type="submit" class="btn btn-danger w-100 py-2 fw-bold">
+                                <i class="fa-solid fa-paper-plane me-2"></i>Enviar Reporte
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <div class="container">
+            <p class="mb-0 small">&copy; 2026 Centinela Digital. Sistema de Alerta Temprana e Inteligencia Ciudadana.</p>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centinela Digital - Guías y Educación</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-info" href="{{ url_for('index') }}">
+                <i class="fa-solid fa-shield-halved me-2"></i>CENTINELA DIGITAL
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}"><i class="fa-solid fa-house me-1"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('reportar') }}"><i class="fa-solid fa-triangle-exclamation me-1"></i> Reportar Incidente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('educacion') }}"><i class="fa-solid fa-graduation-cap me-1"></i> Guías de Prevención</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="container my-4 flex-grow-1">
+        <div class="mb-4">
+            <h2 class="fw-bold"><i class="fa-solid fa-book-medical text-primary me-2"></i>Guías Rápidas de Prevención</h2>
+            <p class="text-muted">Aprende a identificar y prevenir los ciberataques más comunes.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="icon-box bg-primary text-white mb-3">
+                            <i class="fa-solid fa-key fa-lg"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Contraseñas Seguras</h5>
+                        <p class="card-text text-muted">Combina mayúsculas, números y símbolos. Activa la verificación en dos pasos (2FA) en todas tus cuentas importantes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="icon-box bg-warning text-dark mb-3">
+                            <i class="fa-solid fa-fish fa-lg"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Detectar Phishing</h5>
+                        <p class="card-text text-muted">Desconfía de enlaces raros o mensajes de urgencia que soliciten validar cuentas bancarias o credenciales personales.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="icon-box bg-danger text-white mb-3">
+                            <i class="fa-solid fa-user-ninja fa-lg"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Robo de WhatsApp</h5>
+                        <p class="card-text text-muted">Nunca compartas con nadie el código de 6 dígitos que llega por SMS, aunque afirmen ser del soporte técnico.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <div class="container">
+            <p class="mb-0 small">&copy; 2026 Centinela Digital. Sistema de Alerta Temprana e Inteligencia Ciudadana.</p>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

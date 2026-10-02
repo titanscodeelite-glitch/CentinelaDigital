@@ -1,0 +1,52 @@
+/* Estilos globales y personalización para Centinela Digital */
+
+:root {
+    --primary-color: #0d6efd;
+    --dark-bg: #1a1e21;
+    --card-hover-transform: translateY(-4px);
+}
+
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Tarjetas con microinteracciones */
+.card {
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: var(--card-hover-transform);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Hero Banner */
+.hero-banner {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    border-radius: 12px;
+}
+
+/* Bordes laterales de nivel de riesgo */
+.border-risk-high {
+    border-left: 5px solid #dc3545 !important;
+}
+
+.border-risk-medium {
+    border-left: 5px solid #ffc107 !important;
+}
+
+.border-risk-low {
+    border-left: 5px solid #0dcaf0 !important;
+}
+
+/* Cajas de Íconos */
+.icon-box {
+    width: 50px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
