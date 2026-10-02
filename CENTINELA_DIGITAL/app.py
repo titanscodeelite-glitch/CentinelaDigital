@@ -5,18 +5,19 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'clave_secreta_sentinela_2026'
 
-# Configuración de la Base de Datos MySQL (usando variables de entorno o valores por defecto)
-mysql_user = os.environ.get('MYSQL_USER', 'tu_usuario')
-mysql_password = os.environ.get('MYSQL_PASSWORD', 'tu_contrasena')
-mysql_host = os.environ.get('MYSQL_HOST', 'localhost')
-mysql_db = os.environ.get('MYSQL_DB', 'sentinela_db')
+# Configuración de PostgreSQL (Render provee la variable DATABASE_URL automáticamente)
+database_url = os.environ.get('DATABASE_URL', 'sqlite:///sentinela.db')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{mysql_user}:{mysql_password}@{mysql_host}/{mysql_db}'
+# Corrección de compatibilidad para URLs de PostgreSQL en Render
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# Modelo para guardar los reportes o mensajes de ayuda en MySQL
+# Modelo para guardar los reportes de incidentes en PostgreSQL
 class Reporte(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=True)
