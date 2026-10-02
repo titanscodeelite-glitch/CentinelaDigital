@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -33,6 +33,10 @@ with app.app_context():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/educacion')
+def educacion():
+    return render_template('educacion.html')
 
 @app.route('/reportar', methods=['POST'])
 def reportar():
