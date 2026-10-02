@@ -1,68 +1,53 @@
-import os
 from flask import Flask, render_template, request, redirect, url_for, flash
-from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'clave_secreta_sentinela_2026'
 
-# Llave secreta configurable por variables de entorno para producción
-app.secret_key = os.environ.get('SECRET_KEY', 'centinela_digital_secret_key_2026')
+# Configuración de la Base de Datos MySQL (usando variables de entorno o valores por defecto para pruebas locales)
+mysql_user = os.environ.get('MYSQL_USER', 'tu_usuario')
+mysql_password = os.environ.get('MYSQL_PASSWORD', 'tu_contrasena')
+mysql_host = os.environ.get('MYSQL_HOST', 'localhost')
+mysql_db = os.environ.get('MYSQL_DB', 'sentinela_db')
 
-# Base de datos en memoria (Sustituir por base de datos SQL en etapa avanzada)
-ALERTAS_RECIENTES = [
-    {
-        "id": 1,
-        "titulo": "Campaña masiva de Phishing bancario vía SMS",
-        "categoria": "Fraude Financiero",
-        "nivel": "Alto",
-        "fecha": "2026-10-01",
-        "descripcion": "Mensajes falsos solicitando verificación urgente de cuenta bancaria mediante un enlace malicioso."
-    },
-    {
-        "id": 2,
-        "titulo": "Robo de cuentas de WhatsApp mediante código de verificación",
-        "categoria": "Suplantación de Identidad",
-        "nivel": "Medio",
-        "fecha": "2026-09-30",
-        "descripcion": "Llamadas solicitando un código enviado por SMS para supuestamente confirmar un servicio o entrega."
-    }
-]
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{mysql_user}:{mysql_password}@{mysql_host}/{mysql_db}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-REPORTES_CIUDADANOS = []
+db = SQLAlchemy(app)
+
+# Modelo para guardar los reportes o mensajes de ayuda de forma segura en MySQL
+class Reporte(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=True)
+    contacto = db.Column(db.String(150), nullable=False)
+    mensaje = db.Column(db.Text, nullable=False)
+
+# Crear las tablas automáticamente al iniciar la app si no existen
+with app.app_context():
+    try:
+        db.create_all()
+    except Exception as e:
+        print(f"Error al conectar con la base de datos: {e}")
 
 @app.route('/')
 def index():
-    """Página principal con Dashboard de alertas y estadísticas."""
-    total_reportes = len(REPORTES_CIUDADANOS) + 128
-    return render_template('index.html', alertas=ALERTAS_RECIENTES, total_reportes=total_reportes)
+    return render_template('index.html')
 
-@app.route('/reportar', methods=['GET', 'POST'])
+@app.route('/reportar', methods=['POST'])
 def reportar():
-    """Ruta para recibir y procesar los reportes ciudadanos."""
-    if request.method == 'POST':
-        tipo_incidente = request.form.get('tipo_incidente')
-        descripcion = request.form.get('descripcion')
-        contacto = request.form.get('contacto', 'Anónimo')
-        
-        nuevo_reporte = {
-            "id": len(REPORTES_CIUDADANOS) + 1,
-            "tipo": tipo_incidente,
-            "descripcion": descripcion,
-            "contacto": contacto if contacto.strip() else 'Anónimo',
-            "fecha": datetime.now().strftime("%Y-%m-%d %H:%M")
-        }
-        
-        REPORTES_CIUDADANOS.append(nuevo_reporte)
-        flash('¡Reporte registrado exitosamente! El equipo técnico revisará el incidente.', 'success')
-        return redirect(url_for('reportar'))
+    nombre = request.form.get('nombre', 'Anónimo')
+    contacto = request.form.get('contacto')
+    mensaje = request.form.get('mensaje')
 
-    return render_template('reportar.html')
+    if not contacto or not mensaje:
+        return "Por favor completa los campos obligatorios.", 400
 
-@app.route('/educacion')
-def educacion():
-    """Portal educativo de prevención y ciberseguridad."""
-    return render_template('educacion.html')
+    nuevo_reporte = Reporte(nombre=nombre, contacto=contacto, mensaje=mensaje)
+    db.session.add(nuevo_reporte)
+    db.session.commit()
+
+    return render_template('index.html', enviado=True)
 
 if __name__ == '__main__':
-    # Obtener el puerto desde el entorno de Render o usar 5000 por defecto
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(debug=True)
