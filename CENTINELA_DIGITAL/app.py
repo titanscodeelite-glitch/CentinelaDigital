@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'clave_secreta_sentinela_2026'
 
-# Configuración de la Base de Datos MySQL (usando variables de entorno o valores por defecto para pruebas locales)
+# Configuración de la Base de Datos MySQL (usando variables de entorno o valores por defecto)
 mysql_user = os.environ.get('MYSQL_USER', 'tu_usuario')
 mysql_password = os.environ.get('MYSQL_PASSWORD', 'tu_contrasena')
 mysql_host = os.environ.get('MYSQL_HOST', 'localhost')
@@ -16,7 +16,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# Modelo para guardar los reportes o mensajes de ayuda de forma segura en MySQL
+# Modelo para guardar los reportes o mensajes de ayuda en MySQL
 class Reporte(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=True)
@@ -38,20 +38,23 @@ def index():
 def educacion():
     return render_template('educacion.html')
 
-@app.route('/reportar', methods=['POST'])
+@app.route('/reportar', methods=['GET', 'POST'])
 def reportar():
-    nombre = request.form.get('nombre', 'Anónimo')
-    contacto = request.form.get('contacto')
-    mensaje = request.form.get('mensaje')
+    if request.method == 'POST':
+        nombre = request.form.get('nombre', 'Anónimo')
+        contacto = request.form.get('contacto')
+        mensaje = request.form.get('mensaje')
 
-    if not contacto or not mensaje:
-        return "Por favor completa los campos obligatorios.", 400
+        if not contacto or not mensaje:
+            return "Por favor completa los campos obligatorios.", 400
 
-    nuevo_reporte = Reporte(nombre=nombre, contacto=contacto, mensaje=mensaje)
-    db.session.add(nuevo_reporte)
-    db.session.commit()
+        nuevo_reporte = Reporte(nombre=nombre, contacto=contacto, mensaje=mensaje)
+        db.session.add(nuevo_reporte)
+        db.session.commit()
 
-    return render_template('index.html', enviado=True)
+        return render_template('reportar.html', enviado=True)
+    
+    return render_template('reportar.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
