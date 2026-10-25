@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centinela Digital - Portal Ciudadano</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+        body { background: #ffffff; color: #333; min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* Barra de Navegación Superior */
+        header {
+            background: #ffffff;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-izquierda {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icono-portal {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #8B0000;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fdf2f2;
+        }
+
+        .icono-portal img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            filter: brightness(0) saturate(100%) invert(14%) sepia(92%) saturate(6447%) hue-rotate(1deg) brightness(96%) contrast(118%);
+        }
+
+        .portal-info h1 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #8B0000;
+        }
+
+        .portal-info p {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .header-derecha {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .barra-busqueda {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 5px 15px;
+            background: #f9f9f9;
+        }
+
+        .barra-busqueda input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 13px;
+            padding-left: 5px;
+        }
+
+        .btn-salida {
+            background: #fff;
+            border: 1px solid #8B0000;
+            color: #8B0000;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-salida:hover {
+            background: #8B0000;
+            color: #fff;
+        }
+
+        .btn-auth {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-login-nav {
+            background: transparent;
+            color: #8B0000;
+            border: 1px solid #8B0000;
+        }
+
+        .btn-login-nav:hover {
+            background: #fdf2f2;
+        }
+
+        .btn-reg-nav {
+            background: #8B0000;
+            color: #fff;
+        }
+
+        .btn-reg-nav:hover {
+            background: #6a0000;
+        }
+
+        /* Sección Hero (Principal) */
+        .hero {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-texto h2 {
+            font-size: 42px;
+            font-weight: 800;
+            color: #111;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-texto p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn-denuncia {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            border: 2px solid #8B0000;
+            color: #8B0000;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-denuncia:hover {
+            background: #8B0000;
+            color: #fff;
+        }
+
+        /* Cuadrado de la Imagen Grande */
+        .hero-imagen {
+            width: 100%;
+            height: 380px;
+            border: 2px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f4f4f4;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .hero-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Sección Inferior de 4 Funciones */
+        .seccion-funciones {
+            max-width: 1200px;
+            margin: 20px auto 50px auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 40px;
+        }
+
+        .tarjeta-carac {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .caja-icono-carac {
+            width: 70px;
+            height: 70px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+        }
+
+        .caja-icono-carac img {
+            width: 60%;
+            height: 60%;
+            object-fit: contain;
+            filter: brightness(0) saturate(100%) invert(14%) sepia(92%) saturate(6447%) hue-rotate(1deg) brightness(96%) contrast(118%);
+        }
+
+        .tarjeta-carac h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .tarjeta-carac p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Pie de Página */
+        footer {
+            background: #f1f1f1;
+            border-top: 1px solid #ddd;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #555;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-links a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: #8B0000;
+        }
+
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: 1fr; }
+            .seccion-funciones { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABECERA -->
+    <header>
+        <div class="header-izquierda">
+            <div class="icono-portal">
+                <img src="{{ url_for('static', filename='img/logo.webp') }}" alt="Logo">
+            </div>
+            <div class="portal-info">
+                <h1>Portal ciudadano</h1>
+                <p>Registro y reporte de casos</p>
+            </div>
+        </div>
+
+        <div class="header-derecha">
+            <div class="barra-busqueda">
+                🔍 <input type="text" placeholder="Buscar...">
+            </div>
+            <a href="/login" class="btn-auth btn-login-nav">Iniciar Sesión</a>
+            <a href="/registro" class="btn-auth btn-reg-nav">Registrarse</a>
+            <a href="/login" class="btn-salida">Salida rápida</a>
+        </div>
+    </header>
+
+    <!-- SECCIÓN PRINCIPAL (HERO) -->
+    <section class="hero">
+        <div class="hero-texto">
+            <h2>Tu voz también construye un entorno mas seguro</h2>
+            <p>Reporta de manera fácil y segura cualquier situación de violencia en tu comunidad. Tu denuncia cuenta.</p>
+            <a href="/registro" class="btn-denuncia">Registrar una denuncia &rarr;</a>
+        </div>
+
+        <div class="hero-imagen">
+            <!-- Imagen grande que cumple la función de la "X" en el boceto -->
+            <img src="{{ url_for('static', filename='img/imagen1.jfif') }}" alt="Mensaje de la Plataforma Centinela Digital">
+        </div>
+    </section>
+
+    <!-- 4 TARJETAS INFERIORES DE CARACTERÍSTICAS -->
+    <div class="seccion-funciones">
+        <div class="tarjeta-carac">
+            <div class="caja-icono-carac">
+                <img src="{{ url_for('static', filename='img/logo.webp') }}" alt="Icono">
+            </div>
+            <h4>Denuncia fácil</h4>
+            <p>Completa el formulario en minutos</p>
+        </div>
+
+        <div class="tarjeta-carac">
+            <div class="caja-icono-carac">
+                <img src="{{ url_for('static', filename='img/logo.webp') }}" alt="Icono">
+            </div>
+            <h4>Ubicación precisa</h4>
+            <p>Comparte la ubicación del incidente con GPS</p>
+        </div>
+
+        <div class="tarjeta-carac">
+            <div class="caja-icono-carac">
+                <img src="{{ url_for('static', filename='img/logo.webp') }}" alt="Icono">
+            </div>
+            <h4>Seguro y confidencial</h4>
+            <p>Tus datos estan protegidos</p>
+        </div>
+
+        <div class="tarjeta-carac">
+            <div class="caja-icono-carac">
+                <img src="{{ url_for('static', filename='img/logo.webp') }}" alt="Icono">
+            </div>
+            <h4>Seguimiento en tiempo real</h4>
+            <p>Conoce el estado de tu reporte en todo momento</p>
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <div>Centinela digital</div>
+        <div class="footer-links">
+            <a href="#">Aviso de privacidad</a> | 
+            <a href="#">Contacto</a>
+        </div>
+    </footer>
+
+</body>
+</html>la Digital &bull; Todos los derechos reservados
+    </footer>
+
+</body>
+</html>a Digital &bull; Todos los derechos reservados
+        </div>
+    </div>
+
+</body>
+</html>
